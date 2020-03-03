@@ -1,43 +1,22 @@
 import React from 'react'
-import { SafeAreaView } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {
-  BottomNavigation,
-  BottomNavigationTab,
-  Layout,
-  Text
-} from '@ui-kitten/components'
 
+import { BottomTabBar } from '../components'
 import Home from './Home'
 import Details from './Details'
 
-const BottomTab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator()
 
-const BottomTabBar = ({ navigation, state }: any) => {
-  const onSelect = (index: any) => {
-    navigation.navigate(state.routeNames[index])
-  }
-
-  return (
-    <SafeAreaView>
-      <BottomNavigation selectedIndex={state.index} onSelect={onSelect}>
-        <BottomNavigationTab title="Home" />
-        <BottomNavigationTab title="Details" />
-      </BottomNavigation>
-    </SafeAreaView>
-  )
-}
-
-const TabNavigator = () => (
-  <BottomTab.Navigator tabBar={props => <BottomTabBar {...props} />}>
-    <BottomTab.Screen name="Home" component={Home} />
-    <BottomTab.Screen name="Details" component={Details} />
-  </BottomTab.Navigator>
+const Tabs = () => (
+  <Tab.Navigator tabBar={BottomTabBar}>
+    <Tab.Screen name="Home" component={Home} />
+    <Tab.Screen name="Details" component={Details} />
+  </Tab.Navigator>
 )
 
 export const AppNavigator = () => (
   <NavigationContainer>
-    <TabNavigator />
+    <Tabs />
   </NavigationContainer>
 )

@@ -1,37 +1,18 @@
 import React from 'react'
-import { SafeAreaView, View } from 'react-native'
-import {
-  Divider,
-  Icon,
-  Layout,
-  Text,
-  TopNavigation,
-  TopNavigationAction
-} from '@ui-kitten/components'
+import { SafeAreaView } from 'react-native'
+import { Divider, Layout, Text } from '@ui-kitten/components'
 
-const BackIcon = (style: any) => <Icon {...style} name="arrow-back" />
+import { Header } from '../components'
 
-const DetailsScreen = ({ navigation }: any) => {
-  const navigateBack = () => {
-    navigation.goBack()
-  }
-
-  const BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
-  )
-
+const DetailsScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation
-        title="MyApp"
-        alignment="center"
-        leftControl={BackAction()}
-      />
+      <Header />
       <Divider />
       <Layout
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <Text category="h1">DETAILS</Text>
+        <Text>Details</Text>
       </Layout>
     </SafeAreaView>
   )
