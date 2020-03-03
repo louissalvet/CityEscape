@@ -192,6 +192,14 @@ dependencies {
     }
 }
 
+// IF SOME SHIT HAPPENS, THE ISSUE IS PROBABLY HERE
+buildscript {
+  dependencies {
+    // ...
+    classpath 'com.google.gms:google-services:4.2.0'
+  }
+}
+
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use
 task copyDownloadableDepsToLibs(type: Copy) {
@@ -200,3 +208,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'
