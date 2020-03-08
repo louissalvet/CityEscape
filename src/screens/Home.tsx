@@ -1,20 +1,13 @@
 import React from 'react'
-import { SafeAreaView } from 'react-native'
-import { Divider, Layout, Text } from '@ui-kitten/components'
+import { Layout, Text } from '@ui-kitten/components'
 
-import { Header } from '../components'
+import { Container } from '../components'
 
 const HomeScreen = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Header />
-      <Divider />
-      <Layout
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Text>Home</Text>
-      </Layout>
-    </SafeAreaView>
+    <Container style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home</Text>
+    </Container>
   )
 }
 
