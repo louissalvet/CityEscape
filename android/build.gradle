@@ -36,3 +36,6 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
+
+classpath 'com.android.tools.build:gradle:3.4.1'
+
