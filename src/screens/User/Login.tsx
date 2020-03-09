@@ -1,17 +1,20 @@
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import { Input, Button, Icon } from '@ui-kitten/components'
 
-import { Container, Title } from '../components'
+import { Container, Title } from '../../components'
 
 const MessageIcon = (style: any) => <Icon {...style} name="email-outline" />
 
 const Login = () => {
   const [phone, setPhone] = useState('')
+  const navigation = useNavigation()
 
   const onSubmit = () => {
     if (phone.length === 10) {
       console.log(phone)
+      navigation.navigate('CodeChallenge')
     }
   }
 
