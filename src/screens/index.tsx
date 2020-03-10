@@ -1,21 +1,21 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import { BottomTabBar } from '../components'
+import { useAuth } from '../hooks'
 import Home from './Home'
 import Details from './Details'
 import { UserNavigator } from './User'
 
-import { WatchAuthActionTypes } from '../store/actions'
-
 const Tab = createBottomTabNavigator()
 
 const Tabs = () => {
-  const dispatch = useDispatch()
+  const auth = useAuth()
 
-  dispatch({ type: WatchAuthActionTypes.trigger })
+  useEffect(() => {
+    auth.actions.watch()
+  }, [])
 
   return (
     <Tab.Navigator tabBar={BottomTabBar} initialRouteName="Home">

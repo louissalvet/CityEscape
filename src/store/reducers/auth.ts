@@ -3,14 +3,17 @@ import { Reducer, combineReducers } from 'redux'
 import { WatchAuthActionTypes, WatchAuthSuccessAction } from '../actions'
 import { createRequestReducer } from '../helpers'
 
-type isAuthenticatedState = boolean
+type DataState = WatchAuthSuccessAction['payload']
 
-const initialisAuthenticatedState: isAuthenticatedState = false
+const initialDataState: DataState = {
+  isAuthenticated: false,
+  uid: null
+}
 
-const isAuthenticatedReducer: Reducer<
-  isAuthenticatedState,
-  WatchAuthSuccessAction
-> = (state = initialisAuthenticatedState, action) => {
+const dataReducer: Reducer<DataState, WatchAuthSuccessAction> = (
+  state = initialDataState,
+  action
+) => {
   switch (action.type) {
     case WatchAuthActionTypes.success:
       return action.payload
@@ -24,6 +27,6 @@ const requestsReducer = combineReducers({
 })
 
 export default combineReducers({
-  isAuthenticated: isAuthenticatedReducer,
+  data: dataReducer,
   requests: requestsReducer
 })

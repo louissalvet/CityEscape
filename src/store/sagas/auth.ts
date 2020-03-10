@@ -1,6 +1,6 @@
-import { takeLatest, take, put, call } from 'redux-saga/effects'
+import { takeLatest, take, put, call, all } from 'redux-saga/effects'
 
-import { WatchAuthActionTypes } from '../actions'
+import { WatchAuthActionTypes, WatchCurrentUserActionTypes } from '../actions'
 import { authChannel } from '../helpers'
 
 function* watchAuth() {
@@ -8,12 +8,16 @@ function* watchAuth() {
     const channel = yield call(authChannel)
 
     while (true) {
-      const { isAuthenticated } = yield take(channel)
+      const { isAuthenticated, uid } = yield take(channel)
 
-      yield put({
-        type: WatchAuthActionTypes.success,
-        payload: isAuthenticated
-      })
+      yield all([
+        isAuthenticated &&
+          put({ type: WatchAuthActionTypes.trigger, payload: { uid } }),
+        put({
+          type: WatchAuthActionTypes.success,
+          payload: { isAuthenticated, uid }
+        })
+      ])
     }
   } catch {
     yield put({ type: WatchAuthActionTypes.failure })

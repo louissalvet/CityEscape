@@ -8,5 +8,8 @@ export enum WatchAuthActionTypes {
 
 export interface WatchAuthSuccessAction {
   type: WatchAuthActionTypes.success
-  payload: boolean
+  payload: {
+    isAuthenticated: boolean
+    uid: string | null
+  }
 }
