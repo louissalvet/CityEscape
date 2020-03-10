@@ -8,9 +8,12 @@ function* watchAuth() {
     const channel = yield call(authChannel)
 
     while (true) {
-      const { user } = yield take(channel)
+      const { isAuthenticated } = yield take(channel)
 
-      yield put({ type: WatchAuthActionTypes.success, payload: user })
+      yield put({
+        type: WatchAuthActionTypes.success,
+        payload: isAuthenticated
+      })
     }
   } catch {
     yield put({ type: WatchAuthActionTypes.failure })

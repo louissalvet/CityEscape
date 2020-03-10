@@ -8,5 +8,5 @@ export enum WatchAuthActionTypes {
 
 export interface WatchAuthSuccessAction {
   type: WatchAuthActionTypes.success
-  payload: FirebaseAuthTypes.User | null
+  payload: boolean
 }

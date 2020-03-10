@@ -3,7 +3,9 @@ import auth from '@react-native-firebase/auth'
 
 export function authChannel() {
   const channel = eventChannel(emit => {
-    const unsubscribe = auth().onAuthStateChanged(user => emit({ user }))
+    const unsubscribe = auth().onAuthStateChanged(user =>
+      emit({ isAuthenticated: !!user })
+    )
 
     return unsubscribe
   })

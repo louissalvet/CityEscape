@@ -1,17 +1,16 @@
 import { Reducer, combineReducers } from 'redux'
-import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 
 import { WatchAuthActionTypes, WatchAuthSuccessAction } from '../actions'
 import { createRequestReducer } from '../helpers'
 
-type DataState = FirebaseAuthTypes.User | null
+type isAuthenticatedState = boolean
 
-const initialDataState: DataState = null
+const initialisAuthenticatedState: isAuthenticatedState = false
 
-const dataReducer: Reducer<DataState, WatchAuthSuccessAction> = (
-  state = initialDataState,
-  action
-) => {
+const isAuthenticatedReducer: Reducer<
+  isAuthenticatedState,
+  WatchAuthSuccessAction
+> = (state = initialisAuthenticatedState, action) => {
   switch (action.type) {
     case WatchAuthActionTypes.success:
       return action.payload
@@ -25,6 +24,6 @@ const requestsReducer = combineReducers({
 })
 
 export default combineReducers({
-  data: dataReducer,
+  isAuthenticated: isAuthenticatedReducer,
   requests: requestsReducer
 })
