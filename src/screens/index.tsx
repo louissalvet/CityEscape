@@ -16,6 +16,7 @@ const Tabs = () => {
   const dispatch = useDispatch()
 
   dispatch({ type: WatchAuthActionTypes.trigger })
+
   return (
     <Tab.Navigator tabBar={BottomTabBar} initialRouteName="Home">
       <Tab.Screen name="Home" component={Home} />
