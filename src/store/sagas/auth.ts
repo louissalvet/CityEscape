@@ -1,6 +1,13 @@
 import { takeLatest, take, put, call, all } from 'redux-saga/effects'
+import auth from '@react-native-firebase/auth'
 
-import { WatchAuthActionTypes, WatchCurrentUserActionTypes } from '../actions'
+import {
+  WatchAuthActionTypes,
+  WatchCurrentUserActionTypes,
+  SignInActionTypes,
+  SignInTriggerAction,
+  SignOutActionTypes
+} from '../actions'
 import { authChannel } from '../helpers'
 
 function* watchAuth() {
@@ -11,12 +18,13 @@ function* watchAuth() {
       const { isAuthenticated, uid } = yield take(channel)
 
       yield all([
-        isAuthenticated &&
-          put({ type: WatchAuthActionTypes.trigger, payload: { uid } }),
         put({
           type: WatchAuthActionTypes.success,
           payload: { isAuthenticated, uid }
-        })
+        }),
+        isAuthenticated && uid
+          ? put({ type: WatchCurrentUserActionTypes.trigger })
+          : []
       ])
     }
   } catch {
@@ -24,6 +32,45 @@ function* watchAuth() {
   }
 }
 
+function* signIn({ payload }: SignInTriggerAction) {
+  const { email, password } = payload
+
+  const signInWithEmailAndPassword = () =>
+    auth().signInWithEmailAndPassword(email, password)
+
+  const createUserWithEmailAndPassword = () =>
+    auth().createUserWithEmailAndPassword(email, password)
+
+  const { length: alreadySigned }: string[] = yield call(
+    [auth(), auth().fetchSignInMethodsForEmail],
+    email
+  )
+
+  try {
+    if (alreadySigned) {
+      yield call(signInWithEmailAndPassword)
+    } else {
+      yield call(createUserWithEmailAndPassword)
+    }
+
+    yield put({ type: SignInActionTypes.success })
+  } catch {
+    yield put({ type: SignInActionTypes.failure })
+  }
+}
+
+function* signOut() {
+  try {
+    yield call([auth(), auth().signOut])
+
+    yield put({ type: SignOutActionTypes.success })
+  } catch {
+    yield put({ type: SignOutActionTypes.failure })
+  }
+}
+
 export function* authSaga() {
   yield takeLatest(WatchAuthActionTypes.trigger, watchAuth)
+  yield takeLatest(SignInActionTypes.trigger, signIn)
+  yield takeLatest(SignOutActionTypes.trigger, signOut)
 }

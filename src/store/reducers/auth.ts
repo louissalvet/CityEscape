@@ -1,6 +1,10 @@
 import { Reducer, combineReducers } from 'redux'
 
-import { WatchAuthActionTypes, WatchAuthSuccessAction } from '../actions'
+import {
+  WatchAuthActionTypes,
+  WatchAuthSuccessAction,
+  SignInActionTypes
+} from '../actions'
 import { createRequestReducer } from '../helpers'
 
 type DataState = WatchAuthSuccessAction['payload']
@@ -23,7 +27,8 @@ const dataReducer: Reducer<DataState, WatchAuthSuccessAction> = (
 }
 
 const requestsReducer = combineReducers({
-  watch: createRequestReducer(WatchAuthActionTypes)
+  watch: createRequestReducer(WatchAuthActionTypes),
+  signIn: createRequestReducer(SignInActionTypes)
 })
 
 export default combineReducers({

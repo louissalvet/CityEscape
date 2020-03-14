@@ -1,6 +1,6 @@
 import { eventChannel } from 'redux-saga'
 import auth from '@react-native-firebase/auth'
-import firestore from '@react-native-firebase/firestore'
+import db from '@react-native-firebase/firestore'
 
 export function authChannel() {
   const channel = eventChannel(emit => {
@@ -16,7 +16,7 @@ export function authChannel() {
 
 export function currentUserChannel(uid: string) {
   const channel = eventChannel(emit => {
-    const unsubscribe = firestore()
+    const unsubscribe = db()
       .collection('users')
       .doc(`${uid}`)
       .onSnapshot(snapshot =>

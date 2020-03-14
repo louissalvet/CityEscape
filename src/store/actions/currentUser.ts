@@ -4,13 +4,27 @@ export enum WatchCurrentUserActionTypes {
   success = 'WATCH_CURRENT_USER_SUCCESS'
 }
 
+export enum CompleteProfileActionTypes {
+  trigger = 'COMPLETE_PROFILE_TRIGGER',
+  failure = 'COMPLETE_PROFILE_FAILURE',
+  success = 'COMPLETE_PROFILE_SUCCESS'
+}
+
 export interface WatchCurrentUserSuccessAction {
   type: WatchCurrentUserActionTypes.success
   payload: {
     exists: boolean
     profile: {
-      displayName: string
-      phoneNumber: string
+      pseudo: string
+      photoURL: string
     } | null
-  } | null
+  }
+}
+
+export interface CompleteProfileTriggerAction {
+  type: CompleteProfileActionTypes.trigger
+  payload: {
+    pseudo: string
+    photoURI: string | null
+  }
 }

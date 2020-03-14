@@ -3,7 +3,9 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import { BottomTabBar } from '../components'
-import { useAuth } from '../hooks'
+import { useAuth, useCurrentUser } from '../hooks'
+
+import Splash from './Splash'
 import Home from './Home'
 import Details from './Details'
 import { UserNavigator } from './User'
@@ -11,14 +13,8 @@ import { UserNavigator } from './User'
 const Tab = createBottomTabNavigator()
 
 const Tabs = () => {
-  const auth = useAuth()
-
-  useEffect(() => {
-    auth.actions.watch()
-  }, [])
-
   return (
-    <Tab.Navigator tabBar={BottomTabBar} initialRouteName="Home">
+    <Tab.Navigator tabBar={BottomTabBar} initialRouteName={'Home'}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Details" component={Details} />
       <Tab.Screen name="Auth" component={UserNavigator} />
@@ -26,8 +22,28 @@ const Tabs = () => {
   )
 }
 
-export const AppNavigator = () => (
-  <NavigationContainer>
-    <Tabs />
-  </NavigationContainer>
-)
+export const AppNavigator = () => {
+  const auth = useAuth()
+  const currentUser = useCurrentUser()
+
+  useEffect(() => {
+    auth.actions().watch()
+    console.log(loading)
+  }, [])
+
+  const loading =
+    auth.state.requests.watch.loading ||
+    currentUser.state.requests.watch.loading
+
+  return (
+    <>
+      {loading ? (
+        <Splash />
+      ) : (
+        <NavigationContainer>
+          <Tabs />
+        </NavigationContainer>
+      )}
+    </>
+  )
+}
