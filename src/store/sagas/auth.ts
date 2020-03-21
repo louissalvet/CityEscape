@@ -1,9 +1,8 @@
-import { takeLatest, take, put, call, all } from 'redux-saga/effects'
+import { takeLatest, take, put, call } from 'redux-saga/effects'
 import auth from '@react-native-firebase/auth'
 
 import {
   WatchAuthActionTypes,
-  WatchCurrentUserActionTypes,
   SignInActionTypes,
   SignInTriggerAction,
   SignOutActionTypes
@@ -17,15 +16,10 @@ function* watchAuth() {
     while (true) {
       const { isAuthenticated, uid } = yield take(channel)
 
-      yield all([
-        put({
-          type: WatchAuthActionTypes.success,
-          payload: { isAuthenticated, uid }
-        }),
-        isAuthenticated && uid
-          ? put({ type: WatchCurrentUserActionTypes.trigger })
-          : []
-      ])
+      yield put({
+        type: WatchAuthActionTypes.success,
+        payload: { isAuthenticated, uid }
+      })
     }
   } catch {
     yield put({ type: WatchAuthActionTypes.failure })

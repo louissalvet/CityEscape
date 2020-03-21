@@ -6,26 +6,34 @@ import { Container, Title, Avatar } from '../../components'
 import { useCurrentUser, useAuth } from '../../hooks'
 
 const Account = () => {
-  const { state: currentUserState } = useCurrentUser()
-  const { actions: authActions } = useAuth()
-  const { profile } = currentUserState.data
+  const currentUser = useCurrentUser()
+  const auth = useAuth()
 
-  if (!profile) {
+  if (!currentUser.state.data.exists || !currentUser.state.data.profile) {
     return <></>
   }
 
   return (
-    <Container>
+    <Container style={styles.container}>
       <Layout style={styles.header}>
-        <Avatar style={styles.avatar} source={{ uri: profile.photoURL }} />
-        <Title>{profile.pseudo}</Title>
+        <Avatar
+          style={styles.avatar}
+          source={{ uri: currentUser.state.data.profile?.photoURL }}
+        />
+        <Title>{currentUser.state.data.profile?.pseudo}</Title>
       </Layout>
-      <Button onPress={authActions().signOut}>Déconnexion</Button>
+      <Button status="danger" onPress={auth.actions.signOut}>
+        Déconnexion
+      </Button>
     </Container>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between'
+  },
   header: {
     flexDirection: 'row'
   },

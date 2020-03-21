@@ -1,5 +1,6 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Splash from '../Splash'
 
 import Login from './SignIn'
 import Account from './Account'
@@ -29,4 +30,8 @@ const Tabs = () => {
   )
 }
 
-export const UserNavigator = () => <Tabs />
+export const UserNavigator = () => {
+  const { state: currentUserState } = useCurrentUser()
+
+  return <>{currentUserState.requests.watch.loading ? <Splash /> : <Tabs />}</>
+}

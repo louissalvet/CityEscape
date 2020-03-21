@@ -1,24 +1,16 @@
-import {
-  takeLatest,
-  call,
-  take,
-  put,
-  all,
-  select,
-  takeEvery
-} from 'redux-saga/effects'
+import { takeLatest, call, take, put, select } from 'redux-saga/effects'
 import db from '@react-native-firebase/firestore'
-import storage, { FirebaseStorageTypes } from '@react-native-firebase/storage'
+import storage from '@react-native-firebase/storage'
 
 import {
   WatchCurrentUserActionTypes,
   CompleteProfileActionTypes,
   CompleteProfileTriggerAction
 } from '../actions'
-import { currentUserChannel, uidSelector } from '../helpers'
+import { currentUserChannel, authSelector, createAvatarUri } from '../helpers'
 
-function* watchCurrentUser() {
-  const uid = yield select(uidSelector)
+function* watchCurrentUser({ payload }: any) {
+  const { uid } = payload
 
   try {
     if (!uid) throw new Error('Missing uid')
@@ -26,13 +18,14 @@ function* watchCurrentUser() {
     const channel = yield call(currentUserChannel, uid)
 
     while (true) {
-      const { exists, profile } = yield take(channel)
+      const { exists, profile, games } = yield take(channel)
 
       yield put({
         type: WatchCurrentUserActionTypes.success,
         payload: {
           exists,
-          profile
+          profile,
+          games
         }
       })
     }
@@ -44,23 +37,28 @@ function* watchCurrentUser() {
 }
 
 function* completeProfile({ payload }: CompleteProfileTriggerAction) {
-  const uid = yield select(uidSelector)
+  const authState = yield select(authSelector)
   const { pseudo, photoURI } = payload
 
-  const ref = storage().ref(uid)
+  const defaultAvatarRef = storage().ref('avatar.png')
+  const avatarRef = storage().ref(authState.data.uid)
 
   try {
     let photoURL = ''
 
     if (photoURI) {
-      yield ref.putFile(photoURI)
+      const avatarURI: string = yield call(createAvatarUri, photoURI)
 
-      photoURL = yield call([ref, ref.getDownloadURL])
+      yield avatarRef.putFile(avatarURI)
+
+      photoURL = yield call([avatarRef, avatarRef.getDownloadURL])
+    } else {
+      photoURL = yield call([defaultAvatarRef, defaultAvatarRef.getDownloadURL])
     }
 
     const currentUserDoc = db()
       .collection('users')
-      .doc(`${uid}`)
+      .doc(`${authState.data.uid}`)
 
     yield call([currentUserDoc, currentUserDoc.set], {
       pseudo,

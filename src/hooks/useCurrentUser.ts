@@ -1,20 +1,25 @@
 import { useDispatch } from 'react-redux'
 
-import { CompleteProfileActionTypes } from '../store/actions'
+import {
+  WatchCurrentUserActionTypes,
+  CompleteProfileActionTypes
+} from '../store/actions'
 import useSelector from './useSelector'
 
 export default () => {
   const dispatch = useDispatch()
 
+  const state = useSelector(({ currentUser }) => currentUser)
+
   const actions = {
+    watch: (uid: string) =>
+      dispatch({ type: WatchCurrentUserActionTypes.trigger, payload: { uid } }),
     completeProfile: (pseudo: string, photoURI: string | null) =>
       dispatch({
-        type: CompleteProfileActionTypes.trigger,
+        type: CompleteProfileActionTypes,
         payload: { pseudo, photoURI }
       })
   }
 
-  const state = useSelector(({ currentUser }) => currentUser)
-
-  return { actions, state }
+  return { state, actions }
 }

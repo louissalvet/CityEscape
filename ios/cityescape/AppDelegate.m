@@ -32,6 +32,13 @@
 
   if ([FIRApp defaultApp] == nil) {
       [FIRApp configure];
+
+      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+      if (![defaults boolForKey:@"notFirstRun"]) {
+        [defaults setBool:YES forKey:@"notFirstRun"];
+        [defaults synchronize];
+        [[FIRAuth auth] signOut:NULL];
+ }
     }
 
    return YES;

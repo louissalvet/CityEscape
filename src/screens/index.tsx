@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import { BottomTabBar } from '../components'
 import { useAuth, useCurrentUser } from '../hooks'
+
+import { BottomTabBar } from '../components'
 
 import Splash from './Splash'
 import Home from './Home'
@@ -23,17 +24,32 @@ const Tabs = () => {
 }
 
 export const AppNavigator = () => {
+  const [loading, setLoading] = useState(true)
+
   const auth = useAuth()
   const currentUser = useCurrentUser()
 
   useEffect(() => {
-    auth.actions().watch()
-    console.log(loading)
+    auth.actions.watch()
   }, [])
 
-  const loading =
-    auth.state.requests.watch.loading ||
-    currentUser.state.requests.watch.loading
+  useEffect(() => {
+    const { isAuthenticated, uid } = auth.state.data
+    if (isAuthenticated && uid) currentUser.actions.watch(uid)
+  }, [auth.state.data.isAuthenticated])
+
+  useEffect(() => {
+    if (auth.state.requests.watch.success && !auth.state.data.isAuthenticated) {
+      setLoading(false)
+    }
+    if (
+      auth.state.requests.watch.success &&
+      auth.state.data.isAuthenticated &&
+      currentUser.state.requests.watch.success
+    ) {
+      setLoading(false)
+    }
+  }, [auth.state, currentUser.state])
 
   return (
     <>

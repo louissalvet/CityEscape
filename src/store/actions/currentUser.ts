@@ -14,6 +14,7 @@ export interface WatchCurrentUserSuccessAction {
   type: WatchCurrentUserActionTypes.success
   payload: {
     exists: boolean
+    games: []
     profile: {
       pseudo: string
       photoURL: string

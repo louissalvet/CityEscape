@@ -2,7 +2,8 @@ import { combineReducers, Reducer } from 'redux'
 
 import {
   WatchCurrentUserActionTypes,
-  WatchCurrentUserSuccessAction
+  WatchCurrentUserSuccessAction,
+  CompleteProfileActionTypes
 } from '../actions'
 import { createRequestReducer } from '../helpers'
 
@@ -10,7 +11,8 @@ type DataState = WatchCurrentUserSuccessAction['payload']
 
 const intialDataState: DataState = {
   exists: false,
-  profile: null
+  profile: null,
+  games: []
 }
 
 const dataReducer: Reducer<DataState, WatchCurrentUserSuccessAction> = (
@@ -26,7 +28,8 @@ const dataReducer: Reducer<DataState, WatchCurrentUserSuccessAction> = (
 }
 
 const requestsReducer = combineReducers({
-  watch: createRequestReducer(WatchCurrentUserActionTypes)
+  watch: createRequestReducer(WatchCurrentUserActionTypes),
+  completeProfile: createRequestReducer(CompleteProfileActionTypes)
 })
 
 export default combineReducers({
