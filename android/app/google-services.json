@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "816930724717",
+    "firebase_url": "https://cityescape-82a12.firebaseio.com",
+    "project_id": "cityescape-82a12",
+    "storage_bucket": "cityescape-82a12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816930724717:android:7c71cdbbbff9293212d864",
+        "android_client_info": {
+          "package_name": "org.reactjs.native.example.cityescape"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816930724717-g38ic3h76ss5k0or0r2ep4o9fct8qb4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdKeCWyhtxv4PTTpqOU5I5NYGpm_mPXdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816930724717-g38ic3h76ss5k0or0r2ep4o9fct8qb4k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "816930724717-mvvig3ebbrvie9ggb72hctk7bsk771d5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.cityescape"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
